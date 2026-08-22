@@ -14,6 +14,32 @@ const UI_ICONS = {
     <path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>`
 };
+// Systeem-iconen voor thema-/geluidsknoppen (sinds v0.18.3, gebruikers-
+// verzoek: "alle systeem-logo's dezelfde look en feel" — de ☀️/🌙/🔊/🔇-
+// EMOJI's hadden een eigen, vaste kleur (oranje zon, gele maan) die niet
+// meeveranderde met `currentColor`, en sprongen daardoor uit tegen de
+// verder grijze topbar-iconen (terug-pijl/instellingen-tandwiel/NL zijn
+// gewone tekst-glyphs, volgen `color` al wel). Zelfde `currentColor`-
+// aanpak als UI_ICONS hierboven, opgezocht via THEME_SOUND_ICONS in
+// theme.js/sound-ui.js.
+const THEME_SOUND_ICONS = {
+  sun: `<svg class="sys-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.3" stroke="currentColor" stroke-width="2"/>
+    <path d="M12 2.5v2.6M12 18.9v2.6M4.2 4.2l1.85 1.85M17.95 17.95l1.85 1.85M2.5 12h2.6M18.9 12h2.6M4.2 19.8l1.85-1.85M17.95 6.05l1.85-1.85" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>`,
+  moon: `<svg class="sys-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M20.2 14.6A8.5 8.5 0 1 1 9.4 3.8a6.7 6.7 0 0 0 10.8 10.8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`,
+  soundOn: `<svg class="sys-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M4 9.5v5h3.6l4.9 3.9V5.6L7.6 9.5H4z" fill="currentColor"/>
+    <path d="M15.8 8.7a4.7 4.7 0 0 1 0 6.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M18.3 6.2a8.3 8.3 0 0 1 0 11.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </svg>`,
+  soundOff: `<svg class="sys-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M4 9.5v5h3.6l4.9 3.9V5.6L7.6 9.5H4z" fill="currentColor"/>
+    <path d="M16.3 9.7l4 4M20.3 9.7l-4 4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+  </svg>`
+};
 // Tegel-registry (sinds v0.17.5, gebruikersverzoek: MIDI-vereisende en
 // MIDI-vrije oefeningen liepen "kriskras door elkaar") — enige bron van
 // waarheid voor zowel de tegel-pagina (TilesUI.render(), js/tiles-ui.js) als

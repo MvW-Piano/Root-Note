@@ -66,8 +66,9 @@ const ThemeManager = {
     const btnHeader = document.getElementById('theme-btn-header');
     const btnTiles = document.getElementById('theme-btn-tiles');
     const isDark = theme === 'dark';
-    if (btnStart) btnStart.innerHTML = isDark ? '☀️' : '🌙';
-    if (btnHeader) btnHeader.innerHTML = isDark ? '☀️' : '🌙';
-    if (btnTiles) btnTiles.innerHTML = isDark ? '☀️' : '🌙';
+    const icon = isDark ? THEME_SOUND_ICONS.sun : THEME_SOUND_ICONS.moon;
+    if (btnStart) btnStart.innerHTML = icon;
+    if (btnHeader) btnHeader.innerHTML = icon;
+    if (btnTiles) btnTiles.innerHTML = icon;
   }
 };

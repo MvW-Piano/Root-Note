@@ -15,7 +15,7 @@ const SoundUI = {
   },
   updateIcons(){
     const on = this.isOn();
-    const icon = on ? '🔊' : '🔇';
+    const icon = on ? THEME_SOUND_ICONS.soundOn : THEME_SOUND_ICONS.soundOff;
     const title = Lang.t(on ? 'tooltip_sound_on' : 'tooltip_sound_off');
     const btnHeader = document.getElementById('sound-btn-header');
     if (btnHeader){ btnHeader.innerHTML = icon; btnHeader.title = title; }

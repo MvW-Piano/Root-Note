@@ -88,6 +88,12 @@ const TilesUI = {
     if (tier === 'only') return `<span class="tile-badge tile-badge-only">${Lang.t('tileMidiOnly')}</span>`;
     return '';
   },
+  // Tegel-indeling: icoon links, titel+omschrijving ernaast (horizontale
+  // rij) — een tussentijdse ronde met een 50/50 icoon/tekst-grid + een
+  // scheidingslijn is op gebruikersverzoek weer teruggedraaid ("het is
+  // gelukt maar levert toch niet het gewenste resultaat op"), ALLEEN de
+  // badge-positie uit die ronde (gecentreerd onderaan i.p.v. de
+  // rechterbovenhoek) is behouden, zie .tile-badge in styles.css.
   _tileMarkup({ id, label, desc, badge, extraClass, onclick }){
     const onclickAttr = onclick ? ` onclick="${onclick}"` : '';
     return `<button type="button" class="tile-btn ${extraClass}"${onclickAttr}>

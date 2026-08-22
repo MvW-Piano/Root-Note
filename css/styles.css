@@ -30,6 +30,13 @@
   --bg-dark:#0a0d1f; --bg-panel:#0a0d1f; --bg-card:#141833; --bg-panel-glass:rgba(10,13,31,.62);
   --text-main:#f5f7fb; --text-muted:#8b93a9; --border-color:rgba(34,211,238,.18);
   --accent:#22d3ee; --accent-hover:#06b6d4; --accent-2:#c026d3;
+  /* --accent-ink (sinds v0.18.3): tekstkleur BOVENOP een vlak-gevulde
+     var(--accent)-achtergrond (bijv. `.mode-switch-btn.active`) — de
+     felle dark-mode-cyaan is te licht voor witte tekst (gebruikersfeedback:
+     "Cyan te fel waardoor de tekst niet goed leesbaar is"), dus hier
+     bewust donker i.p.v. wit; in light mode (hieronder) is --accent al
+     een dieper cyaan waar wit wél goed op leest. */
+  --accent-ink:#0a0d1f;
   --paper-bg:#10132a; --paper-ink:#f2f4f9; --paper-border:rgba(34,211,238,.16); --paper-muted:#8b93a9;
   --piano-white:#fdfbf3; --piano-black:#14110f; --overlay-bg:#0a0d1f;
   --paper-btn-bg:#1b1f42; --paper-btn-hover:#262c50;
@@ -62,15 +69,41 @@
      gradient-tint. De PianoICO-badges zelf blijven ONGEWIJZIGD tussen de
      thema's (zie TILE_ICONS/tiles-ui.js) — hun eigen donkere cirkel-badge
      is al zelfvoorzienend genoeg contrast op wit. */
-  --bg-dark:#e6e1f5; --bg-panel:#ffffff; --bg-card:#ffffff; --bg-panel-glass:rgba(255,255,255,.62);
-  --text-main:#181229; --text-muted:#6b6680; --border-color:rgba(8,145,178,.2);
+  /* Structuur OMGEDRAAID (derde feedbackronde op v0.18.3, gebruikers-
+     inzicht: "in het donkere thema is de achtergrond DONKERDER dan kaart en
+     header" — in dark mode is --bg-dark #0a0d1f inderdaad het donkerste
+     punt, en liggen --bg-card/--paper-bg er als iets LICHTERE, "opgetilde"
+     vlakken bovenop). De vorige light-mode-poging deed het omgekeerde: een
+     getint canvas (--bg-dark) met witte kaarten erbovenop (kaart = het
+     extreme punt). Nu wél hetzelfde principe als dark mode, gespiegeld in
+     helderheid: --bg-dark is hier het EXTREME punt (zuiver wit), --bg-card/
+     --paper-bg zijn een tikje MINDER extreem — dus "opgetild" door van het
+     canvas AF te wijken, precies zoals in dark mode. --paper-btn-bg/-hover
+     (knoppen BOVENOP de kaart) gaan om dezelfde reden weer terug richting
+     wit/zuiverder — net als in dark mode de knoppen-op-paper
+     (--paper-btn-bg) weer LICHTER zijn dan --paper-bg zelf.
+     **Kaart-/kop-tint: eerst crème/sepia geprobeerd, uiteindelijk lichtblauw
+     (vijfde feedbackronde) — een ivoor/crème-tint (vorige poging) bleek nog
+     steeds te botsen met de cyaan/magenta-merkkleuren; een zachte
+     lichtblauwe/cyaan-tint (#e3f5fa) sluit direct aan bij --accent zelf,
+     dus geen aparte, om het thema heen gekozen kleur meer. */
+  --bg-dark:#ffffff; --bg-panel:#ffffff; --bg-card:#e3f5fa; --bg-panel-glass:rgba(255,255,255,.62);
+  --text-main:#181229; --text-muted:#6b6680; --border-color:rgba(8,145,178,.28);
   --accent:#0891b2; --accent-hover:#0e7490; --accent-2:#a21caf;
-  --paper-bg:#ffffff; --paper-ink:#181229; --paper-border:rgba(8,145,178,.16); --paper-muted:#6b6680;
-  --overlay-bg:#e6e1f5;
-  --paper-btn-bg:#f6f0fb; --paper-btn-hover:#ecdff6;
-  --shadow-sm:0 2px 10px rgba(6,95,120,.08);
-  --shadow-md:0 14px 32px rgba(6,95,120,.1);
-  --shadow-lg:0 30px 70px rgba(8,145,178,.18);
+  --accent-ink:#ffffff;
+  --paper-bg:#e3f5fa; --paper-ink:#181229; --paper-border:rgba(8,145,178,.34); --paper-muted:#6b6680;
+  --overlay-bg:#ffffff;
+  --paper-btn-bg:#ffffff; --paper-btn-hover:#c9ecf5;
+  /* Schaduwen/gloed opgehoogd (sinds v0.18.3, gebruikersfeedback: "Light
+     Thema is erg saai/eentonig ... springt er minder goed uit dan Dark
+     Thema") — was te subtiel/laag-verzadigd (rgba(6,95,120,...), een
+     gedempte teal) om als merkbare "gloed" te lezen tegen een wit canvas;
+     nu directer op de cyaan-accentkleur + hogere opacity, dezelfde
+     richting als de dark-mode-gloed maar met genoeg diepte om op wit te
+     dragen. */
+  --shadow-sm:0 2px 10px rgba(8,145,178,.14);
+  --shadow-md:0 14px 32px rgba(8,145,178,.18);
+  --shadow-lg:0 30px 70px rgba(8,145,178,.26);
 
   /* Kwintencirkel — originele blauwtinten (Light Mode), niet aangepast */
   --wheel-maj: #60a5fa;
@@ -97,9 +130,12 @@ body{
   background-attachment:fixed;
 }
 [data-theme="light"] body{
+  /* Opgehoogd sinds v0.18.3 (zie --shadow-*-toelichting hierboven, zelfde
+     "Light Thema te saai"-feedback) — was nauwelijks zichtbaar tegen het
+     lichte canvas. */
   background-image:
-    radial-gradient(38% 32% at 10% 6%, rgba(8,145,178,.10), transparent 70%),
-    radial-gradient(32% 30% at 92% 16%, rgba(162,28,175,.08), transparent 70%);
+    radial-gradient(38% 32% at 10% 6%, rgba(8,145,178,.16), transparent 70%),
+    radial-gradient(32% 30% at 92% 16%, rgba(162,28,175,.13), transparent 70%);
 }
 
 #app-shell{ display:flex; flex-direction:column; width:100%; height:100%; }
@@ -148,6 +184,13 @@ body{
   align-items:center; gap:16px; border-bottom:1px solid var(--border-color); position:relative;
   z-index:30; transition:background-color .3s; flex-shrink:0;
 }
+/* Light mode: getinte kaart-achtergrond i.p.v. puur transparant (sinds
+   v0.18.3-feedback, "header mag beter uitspringen") — nu het canvas
+   (--bg-dark) zuiver wit is, moet de topbar juist NIET ook wit-op-wit zijn;
+   dezelfde lichtblauwe tint als --bg-card/--paper-bg (zie de toelichting
+   bij [data-theme="light"] hierboven) geeft 'm hetzelfde "opgetilde
+   kaart"-gevoel als de flashcard eronder, i.p.v. gewoon lucht. */
+[data-theme="light"] #content-topbar{ background-color:rgba(227,245,250,.8); }
 .topbar-left{ display:flex; align-items:center; gap:10px; grid-column:1; justify-self:start; min-width:0; }
 #content-topbar h1{
   grid-column:2; justify-self:center; text-align:center;
@@ -173,6 +216,18 @@ body{
   transition:background-color .15s ease, color .15s ease;
 }
 .topbar-icon-btn:hover{ background:var(--bg-card); color:var(--text-main); }
+/* Thema-/geluid-SVG's (THEME_SOUND_ICONS, `.sys-icon`, sinds v0.18.3)
+   hebben geen eigen width/height-attribuut — zonder expliciete maat viel de
+   browser terug op een intrinsieke standaardgrootte die per context anders
+   uitpakte (te groot in de topbar, te klein op de cover-/tegelpagina; een
+   eerdere poging met losse per-context pixel-regels loste de topbar wél op
+   maar de cover-/tegelpagina-variant bleef om onduidelijke reden op de
+   oude, te kleine maat hangen). `1em` i.p.v. een vaste pixelwaarde is
+   robuuster: elke knop-context bepaalt zijn eigen icoon-grootte gewoon via
+   zijn BESTAANDE `font-size` (topbar 1.05rem, cover-/tegelpagina 1.2rem,
+   zie de knop-basisregels), zelfde principe als hoe de oude emoji's altijd
+   al schaalden. */
+.sys-icon{ width:1em; height:1em; display:block; flex-shrink:0; }
 
 /* Modus-schakelaar (sinds de tegel-consolidatie naar 1 tegel per app) —
    vervangt de vroegere Modus-tegels op de tegel-pagina: je kiest de modus nu
@@ -204,7 +259,7 @@ body{
   transition:background-color .15s ease, color .15s ease, border-color .15s ease;
 }
 .mode-switch-btn:hover:not(.disabled):not(.active){ border-color:var(--accent); }
-.mode-switch-btn.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.mode-switch-btn.active{ background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:700; }
 .mode-switch-btn.disabled{ color:var(--text-muted); opacity:.55; cursor:not-allowed; }
 
 @media (max-width:640px){
@@ -281,41 +336,53 @@ select:focus{ border-color:var(--accent); }
    startscherm") — hergebruikt #init-overlay .welcome-bg-decor/.blob/
    @keyframes blob-float (selectors verbreed naar #tiles-page, zie verderop
    in dit bestand) i.p.v. verdubbeld. */
-.tiles-heading{
-  position:relative; z-index:10;
-  font-family:'Fraunces',serif; font-weight:600; font-size:clamp(1.6rem, 4vw, 2.2rem);
-  color:var(--text-main); margin-bottom:32px; text-align:center;
-}
 /* Tegel-grid: geconsolideerd naar 1 tegel per app (8 tegels totaal, was 17
    tegels/9 gegroepeerde rijen) — past daardoor op vrijwel elk scherm zonder
    scrollen, dus geen aparte .tile-group/.tile-group-header-indeling meer
    nodig (elke tegel draagt zijn eigen naam al). Vaste kolomaantal per
-   breakpoint (gebruikersverzoek: max 4 op groot scherm, 3/2 op tablet, 1 op
-   mobiel) i.p.v. auto-fill — voorspelbaar en consistent met een grid van
-   precies 8 items (2 volle rijen op desktop). */
+   breakpoint i.p.v. auto-fill — voorspelbaar. **3 kolommen op groot scherm
+   (was 4, gebruikersverzoek: "misschien 3x3" — 9 tegels vormen zo een
+   nette 3x3-rooster i.p.v. 4+4+1) geeft bredere tegels, dus meer ruimte
+   voor de omschrijving vóór de 3-regel-afkap (zie .tile-desc verderop).**
+   De oude 700-1000px-tussenstap (ook 3 kolommen) is nu overbodig, want dat
+   is al de standaardwaarde. */
 #tiles-grid{
   position:relative; z-index:10; width:100%; max-width:1200px;
-  display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; padding-bottom:20px;
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; padding-bottom:20px;
 }
-@media (max-width:1000px){ #tiles-grid{ grid-template-columns:repeat(3, 1fr); } }
 @media (max-width:700px){ #tiles-grid{ grid-template-columns:repeat(2, 1fr); } }
 @media (max-width:460px){ #tiles-grid{ grid-template-columns:1fr; } }
-/* Horizontale opzet sinds de logo-ronde (gebruikersverzoek: "zet de
-   omschrijving van de app er dan kort naast op dezelfde knop") — icoon
-   links, titel+omschrijving ernaast, i.p.v. de eerdere gecentreerde
-   verticale stapel. Vervangt niet de kleurcodering/badge-positie uit de
-   dashboard-herstijling, alleen de icoon/tekst-indeling. */
+/* Horizontale opzet (icoon links, titel+omschrijving ernaast) — een
+   tussentijdse ronde met een 50/50 icoon/tekst-grid + scheidingslijn is op
+   gebruikersverzoek weer teruggedraaid ("het is gelukt maar levert toch
+   niet het gewenste resultaat op"); alleen de badge-positie uit die ronde
+   (gecentreerd onderaan, zie .tile-badge verderop) is behouden. */
 .tile-btn{
-  position:relative; aspect-ratio:4/3; display:flex; flex-direction:row; align-items:center;
+  /* aspect-ratio 4/3 -> 2/1 (gebruikersfeedback: "veel losse ruimte boven
+     de badge") — 4/3 was afgestemd op de vorige tegel-indeling (badge
+     rechtsboven, verder geen ondergrens), met de badge nu onderaan
+     gecentreerd bleef er duidelijk lucht over tussen de gecentreerde
+     icoon+tekst-rij en de badge-regel.
+     Bijgesteld naar 5/2 toen het raster van 4 naar 3 kolommen ging (bredere
+     tegels): aspect-ratio schaalt met de BREEDTE, dus bredere tegels op
+     hetzelfde 2/1 zouden ook merkbaar hoger zijn geworden en de net
+     opgeloste lege-ruimte-klacht weer deels terugbrengen — 5/2 houdt de
+     tegelhoogte ongeveer waar die stond vóór de kolom-wijziging. */
+  position:relative; aspect-ratio:5/2; display:flex; flex-direction:row; align-items:center;
   gap:16px;
   /* Iets lichter dan het canvas (var(--bg-card)) + een subtiele, semi-
      transparante accent-gloed rechtsboven in de tegel — zelfde "glow"-
      gevoel als de ambient blobs, maar lokaal per tegel. */
   background:radial-gradient(circle at 85% 10%, rgba(34,211,238,.14), transparent 55%), var(--bg-card);
   border:1px solid var(--border-color); border-radius:var(--radius-md);
-  padding:18px 20px; text-align:left;
+  /* Padding-bottom groter dan -top: de icoon+tekst-rij staat gecentreerd
+     (align-items:center) binnen deze box, extra ruimte onderin houdt 'm
+     los van de onderaan-gecentreerde badge i.p.v. eroverheen te vallen nu
+     de tegel minder hoog is (aspect-ratio 2/1). */
+  padding:16px 20px 30px; text-align:left;
   transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease; cursor:pointer;
 }
+.tile-text{ display:flex; flex-direction:column; gap:4px; min-width:0; }
 .tile-btn:hover{ transform:translateY(-4px); border-color:var(--accent); box-shadow:0 14px 32px rgba(34,211,238,.32); }
 .tile-btn:active{ transform:translateY(-1px) scale(.98); }
 /* Icoon-cirkel — HERZIEN (Neon-herstijling, v0.18.0): niet langer een
@@ -337,7 +404,6 @@ select:focus{ border-color:var(--accent); }
   width:100%; height:100%; object-fit:contain; pointer-events:none;
   filter:drop-shadow(0 0 10px rgba(34,211,238,.55)) drop-shadow(0 0 18px rgba(192,38,211,.28));
 }
-.tile-text{ display:flex; flex-direction:column; gap:4px; min-width:0; }
 .tile-label{ font-size:1.05rem; font-weight:800; color:var(--text-main); font-family:'Inter',sans-serif; }
 /* Max 3 regels (gebruikersverzoek) via line-clamp, geen aparte mobiele
    verberg-regel meer nodig (bredere tegels op elke breedte dan de vorige
@@ -346,19 +412,23 @@ select:focus{ border-color:var(--accent); }
   font-size:.74rem; color:var(--text-muted); line-height:1.35;
   display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
 }
-/* Badge in de rechterbovenhoek — de kleurgecodeerde vulling (groen/amber)
-   uit de dashboard-herstijling (v0.17.6) is op gebruikersverzoek weer
-   TERUGGEDRAAID naar de rustigere, uniforme outline-stijl uit v0.17.5
-   ("kwam rustiger en leesbaarder over dan de groene versie") — alleen de
-   TEKST verschilt nog tussen "MIDI Enabled"/"MIDI Only", geen apart
-   gevuld/solid-kleurtje meer. Positie (rechterbovenhoek i.p.v. v0.17.5's
-   gecentreerd-onderaan) blijft wél zoals in de dashboard-herstijling, dat
-   is niet waar de klacht over ging. */
+/* Badge gecentreerd ONDERAAN (sinds v0.18.3, was de rechterbovenhoek sinds
+   de dashboard-herstijling in v0.17.6) — enige stuk dat overleefde uit een
+   verder teruggedraaide tegel-herontwerpronde (zie .tile-btn hierboven).
+   `position:absolute` + `left:50%`/`transform` i.p.v. de eerdere
+   `margin-top:auto`-flexbox-aanpak uit die ronde, want `.tile-btn` is weer
+   een horizontale rij (icoon+tekst naast elkaar), niet meer een kolom
+   waarin de badge vanzelf onderaan terechtkomt. De kleurgecodeerde vulling
+   (groen/amber) uit v0.17.6 is op gebruikersverzoek destijds al
+   TERUGGEDRAAID naar de rustigere, uniforme outline-stijl uit v0.17.5 —
+   alleen de TEKST verschilt nog tussen "MIDI Enabled"/"MIDI Only", geen
+   apart gevuld/solid-kleurtje meer. */
 .tile-badge{
-  position:absolute; top:10px; right:10px;
+  position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
   display:inline-block; padding:2px 9px; border-radius:999px; font-size:.6rem; font-weight:800;
   letter-spacing:.03em; font-family:'JetBrains Mono',monospace;
   color:var(--accent); border:1px solid var(--accent); background:transparent;
+  white-space:nowrap;
 }
 .tile-badge-construction{ color:var(--text-muted); border-color:var(--text-muted); background:transparent; }
 /* Vooruit Lezen-tegel (sinds v0.17.5 terug als tegel, was tot en met
